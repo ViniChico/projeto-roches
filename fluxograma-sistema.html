@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projeto Roches - Fluxograma do Sistema</title>
+  <title>Marketplace Rocha — Fluxograma do Sistema</title>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
   <style>
     :root {
@@ -14,34 +14,35 @@
       --texto: #2b2b2b;
     }
     * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
       font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--texto);
       line-height: 1.55;
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 40px 32px;
+      padding: 28px 18px 60px;
     }
     header {
       border-bottom: 4px solid var(--azul);
       padding-bottom: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
-    h1 { color: var(--azul); margin: 0 0 6px; font-size: 26px; }
+    h1 { color: var(--azul); margin: 0 0 6px; font-size: 24px; }
     .subtitulo { color: #5a6b7b; font-size: 15px; margin: 0; }
     h2 {
       color: var(--azul);
       border-left: 5px solid var(--azul-claro);
       padding-left: 12px;
-      margin-top: 40px;
+      margin-top: 36px;
       font-size: 20px;
     }
-    p, li { font-size: 14px; }
+    p, li { font-size: 15px; }
     table {
       border-collapse: collapse;
       width: 100%;
       margin: 16px 0;
-      font-size: 13.5px;
+      font-size: 14px;
     }
     th, td {
       border: 1px solid var(--borda);
@@ -51,26 +52,62 @@
     }
     th { background: var(--azul); color: #fff; }
     tr:nth-child(even) td { background: var(--cinza); }
-    .diagrama {
+
+    /* ---- Área do diagrama com zoom / scroll ---- */
+    .diagrama-wrap {
       background: #fff;
       border: 1px solid var(--borda);
-      border-radius: 8px;
-      padding: 18px;
-      margin: 18px 0;
-      text-align: center;
+      border-radius: 10px;
+      margin: 16px 0;
+      overflow: hidden;
     }
-    .mermaid { font-size: 14px; }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--cinza);
+      border-bottom: 1px solid var(--borda);
+      flex-wrap: wrap;
+    }
+    .toolbar button {
+      border: 1px solid var(--borda);
+      background: #fff;
+      color: var(--azul);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      min-width: 40px;
+    }
+    .toolbar button:active { background: #e8eef5; }
+    .toolbar .label { font-size: 12.5px; color: #6a7885; margin-left: auto; }
+    .diagrama-scroll {
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 16px;
+      max-height: 78vh;
+    }
+    .diagrama-scroll .mermaid {
+      transform-origin: top center;
+      transition: transform 0.12s ease-out;
+      display: inline-block;
+      min-width: 100%;
+    }
+    .mermaid svg { max-width: none !important; height: auto; }
+
     .escopo-grid { display: flex; gap: 24px; flex-wrap: wrap; }
-    .escopo-col { flex: 1; min-width: 280px; }
+    .escopo-col { flex: 1; min-width: 260px; }
     .incluido { border-left: 4px solid #2e8b57; padding-left: 14px; }
     .fora { border-left: 4px solid #c0392b; padding-left: 14px; }
-    .dica {
+    .aviso {
       background: #eef4fb;
       border: 1px solid #cfe0f3;
       border-radius: 8px;
-      padding: 14px 18px;
-      font-size: 13px;
-      margin-top: 32px;
+      padding: 12px 16px;
+      font-size: 13.5px;
+      margin: 20px 0;
     }
     footer {
       margin-top: 40px;
@@ -80,43 +117,50 @@
       color: #8a97a3;
       text-align: center;
     }
-    @media print {
-      body { padding: 0; max-width: none; }
-      .dica { display: none; }
-      h2 { page-break-after: avoid; }
-      .diagrama { page-break-inside: avoid; }
+    @media (max-width: 600px) {
+      h1 { font-size: 21px; }
+      .diagrama-scroll { max-height: 82vh; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Projeto Marketplace Roches - Fluxograma do Sistema</h1>
-    <p>
-      A ideia do projeto é criar uma plataforma digital no estilo marketplace (semelhante ao iFood) voltada para o segmento B2B. O objetivo principal é unificar a empresa de entregas (Roches), os lojistas parceiros e os clientes finais em um único ambiente, eliminando a necessidade de pedidos manuais por telefone ou mensagem.
-    </p>
-
-    <p>
-      O fluxo do sistema é o seguinte: o comprador acessa o marketplace, navega pelo catálogo de produtos, adiciona itens ao carrinho e envia o pedido. O lojista recebe a notificação do pedido, verifica o estoque e confirma ou recusa o pedido. Se confirmado, a loja prepara o pedido e libera para entrega. A equipe da Roches retira o pedido na loja e realiza a entrega ao comprador, registrando a entrega no sistema.
+    <h1>Marketplace Rocha — Fluxograma do Sistema</h1>
+    <p class="subtitulo">
+      Marketplace de peças e tintas (estilo iFood) integrado à logística de entregas da Rocha.<br />
+      Documento de referência do fluxo — <strong>Fase 1 (MVP, sem pagamento online)</strong>.
     </p>
   </header>
 
-  <h2>Papeis do sistema</h2>
+  <div class="aviso">
+    📱 <strong>No celular:</strong> use os botões <strong>+</strong> / <strong>−</strong> para dar zoom
+    e <strong>arraste</strong> o diagrama para os lados para navegar.
+  </div>
+
+  <h2>Atores do sistema</h2>
   <table>
     <thead>
-      <tr><th>Papeis</th><th>Quem é</th><th>O que faz</th></tr>
+      <tr><th>Ator</th><th>Quem é</th><th>O que faz</th></tr>
     </thead>
     <tbody>
       <tr><td><strong>Comprador</strong></td><td>Cliente final (ex: mecânico, pintor, consumidor)</td><td>Navega o catálogo, monta carrinho e envia o pedido</td></tr>
-      <tr><td><strong>Loja (Fornecedor)</strong></td><td>Clientes da Roches</td><td>Cadastra produtos, recebe e confirma pedidos, libera para retirada</td></tr>
-      <tr><td><strong>Roches</strong></td><td>Empresa de entregas</td><td>Acompanha pedidos confirmados, retira, entrega e mede as entregas</td></tr>
+      <tr><td><strong>Loja (Fornecedor)</strong></td><td>Clientes da Rocha (autopeças, tintas)</td><td>Cadastra produtos, recebe e confirma pedidos, libera para retirada</td></tr>
+      <tr><td><strong>Rocha</strong></td><td>Empresa de entregas (~50 motoboys)</td><td>Acompanha pedidos confirmados, retira, entrega e mede as entregas</td></tr>
     </tbody>
   </table>
 
-  <h2>Fluxograma principal - Jornada do pedido</h2>
-  <div class="diagrama">
-    <pre class="mermaid">
+  <h2>Fluxograma principal — Jornada do pedido</h2>
+  <div class="diagrama-wrap">
+    <div class="toolbar">
+      <button type="button" data-zoom-out>−</button>
+      <button type="button" data-zoom-in>+</button>
+      <button type="button" data-zoom-reset>Ajustar</button>
+      <span class="label">Zoom / arraste para navegar</span>
+    </div>
+    <div class="diagrama-scroll">
+      <pre class="mermaid">
 flowchart TD
-    Start([Comprador acessa o Marketplace Roches]) --> Browse[Navega pelo catalogo<br/>Verifca os produtos dos plataforma]
+    Start([Comprador acessa o Marketplace Rocha]) --> Browse[Navega catalogo<br/>produtos em destaque / mais vendidos]
     Browse --> WantOrder{Quer fazer<br/>um pedido?}
     WantOrder -->|Nao| Browse
     WantOrder -->|Sim| Login[Login / Autenticacao]
@@ -142,24 +186,32 @@ flowchart TD
 
     CheckStock -->|Sim| Confirm[Loja confirma o pedido]
     Confirm --> NotifyBuyerPrep[E-mail ao comprador:<br/>pedido em preparacao]
-    Confirm --> CreateDelivery[Gera registro de entrega<br/>para a equipe da Roches]
+    Confirm --> CreateDelivery[Gera registro de entrega<br/>para a equipe da Rocha]
 
-    CreateDelivery --> RochaDash[Roches ve no dashboard:<br/>status EM PREPARACAO]
+    CreateDelivery --> RochaDash[Rocha ve no dashboard:<br/>status EM PREPARACAO]
     NotifyBuyerPrep --> Prepare[Loja prepara o pedido]
     Prepare --> Release[Loja marca:<br/>ENTREGA LIBERADA]
-    Release --> RochaReady[Dashboard da Roches atualiza:<br/>PRONTO PARA RETIRADA]
+    Release --> RochaReady[Dashboard da Rocha atualiza:<br/>PRONTO PARA RETIRADA]
 
     RochaReady --> Pickup[Motoboy faz a retirada]
     Pickup --> Deliver[Motoboy entrega ao comprador]
     Deliver --> Register[Sistema computa a entrega<br/>loja + data]
     Register --> Report[Relatorio mensal de entregas<br/>por fornecedor]
     Report --> End2([Fim])
-    </pre>
+      </pre>
+    </div>
   </div>
 
   <h2>Diagrama de status do pedido</h2>
-  <div class="diagrama">
-    <pre class="mermaid">
+  <div class="diagrama-wrap">
+    <div class="toolbar">
+      <button type="button" data-zoom-out>−</button>
+      <button type="button" data-zoom-in>+</button>
+      <button type="button" data-zoom-reset>Ajustar</button>
+      <span class="label">Zoom / arraste para navegar</span>
+    </div>
+    <div class="diagrama-scroll">
+      <pre class="mermaid">
 stateDiagram-v2
     [*] --> Enviado: Comprador envia o pedido
     Enviado --> EmPreparacao: Loja confirma (tem estoque)
@@ -169,12 +221,20 @@ stateDiagram-v2
     EmEntrega --> Entregue: Motoboy entrega
     Entregue --> [*]
     Cancelado --> [*]
-    </pre>
+      </pre>
+    </div>
   </div>
 
   <h2>Papéis e telas (visão geral)</h2>
-  <div class="diagrama">
-    <pre class="mermaid">
+  <div class="diagrama-wrap">
+    <div class="toolbar">
+      <button type="button" data-zoom-out>−</button>
+      <button type="button" data-zoom-in>+</button>
+      <button type="button" data-zoom-reset>Ajustar</button>
+      <span class="label">Zoom / arraste para navegar</span>
+    </div>
+    <div class="diagrama-scroll">
+      <pre class="mermaid">
 flowchart LR
     subgraph Comprador
         C1[Catalogo publico]
@@ -198,14 +258,15 @@ flowchart LR
     L2 --> R1
     L3 --> R2
     R2 --> R3
-    </pre>
+      </pre>
+    </div>
   </div>
 
   <h2>Escopo da Fase 1 (MVP)</h2>
   <div class="escopo-grid">
     <div class="escopo-col">
       <div class="incluido">
-        <h3 style="color:#2e8b57;margin-top:0;">Incluído</h3>
+        <h3 style="color:#2e8b57;margin-top:0;">✅ Incluído</h3>
         <ul>
           <li>Catálogo público com produtos em destaque / mais vendidos</li>
           <li>Login e autenticação do comprador</li>
@@ -214,14 +275,14 @@ flowchart LR
           <li>Notificação por e-mail (comprador e loja)</li>
           <li>Painel da loja (ver, confirmar, recusar, liberar pedidos)</li>
           <li>Cadastro de produtos por loja</li>
-          <li>Dashboard de entregas da Roches</li>
+          <li>Dashboard de entregas da Rocha</li>
           <li>Registro de entregas + relatório mensal por fornecedor</li>
         </ul>
       </div>
     </div>
     <div class="escopo-col">
       <div class="fora">
-        <h3 style="color:#c0392b;margin-top:0;"> Fora do MVP (Possiveis fases futuras)</h3>
+        <h3 style="color:#c0392b;margin-top:0;">🚫 Fora do MVP (fases futuras)</h3>
         <ul>
           <li>Pagamento online / e-commerce</li>
           <li>Notificação por WhatsApp</li>
@@ -237,7 +298,52 @@ flowchart LR
   </footer>
 
   <script>
-    mermaid.initialize({ startOnLoad: true, theme: "default", flowchart: { useMaxWidth: true } });
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "default",
+      securityLevel: "loose",
+      flowchart: { useMaxWidth: false, htmlLabels: true },
+      themeVariables: { fontSize: "18px" }
+    });
+
+    // Zoom e arraste (pan) por diagrama
+    window.addEventListener("load", () => {
+      setTimeout(setupZoom, 600);
+    });
+
+    function setupZoom() {
+      document.querySelectorAll(".diagrama-wrap").forEach((wrap) => {
+        const scroll = wrap.querySelector(".diagrama-scroll");
+        const target = wrap.querySelector(".mermaid");
+        let scale = 1;
+
+        const apply = () => { target.style.transform = `scale(${scale})`; };
+
+        wrap.querySelector("[data-zoom-in]").addEventListener("click", () => {
+          scale = Math.min(scale + 0.25, 4); apply();
+        });
+        wrap.querySelector("[data-zoom-out]").addEventListener("click", () => {
+          scale = Math.max(scale - 0.25, 0.5); apply();
+        });
+        wrap.querySelector("[data-zoom-reset]").addEventListener("click", () => {
+          scale = 1; apply(); scroll.scrollTo({ left: 0, top: 0 });
+        });
+
+        // Arraste com o mouse (desktop). No celular o scroll por toque já funciona.
+        let isDown = false, startX, startY, sx, sy;
+        scroll.addEventListener("mousedown", (e) => {
+          isDown = true; startX = e.pageX; startY = e.pageY;
+          sx = scroll.scrollLeft; sy = scroll.scrollTop; scroll.style.cursor = "grabbing";
+        });
+        window.addEventListener("mouseup", () => { isDown = false; scroll.style.cursor = ""; });
+        scroll.addEventListener("mousemove", (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          scroll.scrollLeft = sx - (e.pageX - startX);
+          scroll.scrollTop = sy - (e.pageY - startY);
+        });
+      });
+    }
   </script>
 </body>
 </html>
